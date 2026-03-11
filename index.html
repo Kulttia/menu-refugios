@@ -1,10 +1,12 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú Refugios</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="apple-touch-icon" href="img/favicon.png">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Alpine.js -->
@@ -55,6 +57,46 @@
             position: relative;
             top: -4px;
         }
+
+        /* Scroll-spy: link activo en nav */
+        nav a.nav-active {
+            color: #4e342e;
+            border-bottom-color: #4e342e;
+        }
+
+        /* Botón volver arriba */
+        #back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 1.5rem;
+            z-index: 999;
+            width: 3rem;
+            height: 3rem;
+            background-color: #4e342e;
+            color: #fafafa;
+            border: 3px solid #1a1a1a;
+            box-shadow: 4px 4px 0px #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(1rem);
+            transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.15s ease;
+            pointer-events: none;
+        }
+
+        #back-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        #back-to-top:hover {
+            background-color: #a1887f;
+            box-shadow: 2px 2px 0px #1a1a1a;
+            transform: translateY(2px);
+        }
     </style>
     <script>
         tailwind.config = {
@@ -100,13 +142,24 @@
             </button>
 
             <!-- Menú Desktop -->
-            <nav class="hidden md:flex flex-1 justify-start gap-8 font-bold text-xs tracking-widest uppercase">
+            <nav id="nav-desktop"
+                class="hidden md:flex flex-1 justify-start gap-8 font-bold text-xs tracking-widest uppercase">
                 <a href="#cafe"
                     class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1">Café</a>
                 <a href="#reposteria"
                     class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1">Repostería</a>
                 <a href="#libros"
                     class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1">Libros</a>
+                <a href="https://wa.me/+573238113985" target="_blank" rel="noopener noreferrer"
+                    class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1 flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                        <path
+                            d="M12 0C5.373 0 0 5.373 0 12c0 2.089.535 4.049 1.474 5.762L0 24l6.406-1.451A11.956 11.956 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 0 1-5.006-1.367l-.36-.214-3.722.844.878-3.61-.235-.372A9.808 9.808 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z" />
+                    </svg>
+                    Contacto
+                </a>
             </nav>
 
             <!-- Título central -->
@@ -134,11 +187,18 @@
                     class="border-b-[6px] border-brand-light pb-2 hover:text-brand-dark w-full text-left transition-colors">Repostería</a>
                 <a @click="mobileMenuOpen = false; document.body.classList.remove('no-scroll')" href="#libros"
                     class="border-b-[6px] border-brand-light pb-2 hover:text-brand-dark w-full text-left transition-colors">Libros</a>
+                <a @click="mobileMenuOpen = false; document.body.classList.remove('no-scroll')"
+                    href="https://wa.me/+573238113985" target="_blank" rel="noopener noreferrer"
+                    class="border-b-[6px] border-brand-light pb-2 hover:text-brand-dark w-full text-left transition-colors flex items-center gap-3">
+                    <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                        <path
+                            d="M12 0C5.373 0 0 5.373 0 12c0 2.089.535 4.049 1.474 5.762L0 24l6.406-1.451A11.956 11.956 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 0 1-5.006-1.367l-.36-.214-3.722.844.878-3.61-.235-.372A9.808 9.808 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z" />
+                    </svg>
+                    Contacto
+                </a>
             </nav>
-            <div class="mb-12 text-brand-dark text-xs font-bold uppercase leading-tight tracking-widest">
-                <p>Nuestra Tienda</p>
-                <p class="text-brand-light mt-2">Centro Comercial La Gran Manzana</p>
-            </div>
         </div>
     </header>
 
@@ -146,7 +206,6 @@
     <section class="w-full border-b-[6px] border-negro overflow-hidden relative bg-brand-light" x-data="{ currentSlide: 0, slides: [
         'img/refugios-front.jpg',
         'img/img-2.jpg',
-        'img/img-3.jpg',
         'img/img-4.jpg'
     ] }">
         <!-- Contenedor cuadrado -->
@@ -195,7 +254,11 @@
             class="text-xs md:text-sm font-bold uppercase tracking-widest text-brand-dark max-w-3xl leading-relaxed space-y-4">
             <p>Creamos un espacio acogedor, con libros seleccionados, café de origen y una comunidad digital para volver
                 a disfrutar de la lectura a tu ritmo.</p>
-            <p>Nuestro propósito es:<br>Ayudar a personas que han perdido el interés por la lectura a reconectarse con
+            <p
+                class="text-brand-light text-[11px] md:text-xs tracking-widest uppercase pt-2 border-t border-brand-light font-bold">
+                Nuestro propósito es:</p>
+            <p class="text-brand-dark font-normal normal-case tracking-normal">Ayudar a personas que han perdido el
+                interés por la lectura a reconectarse con
                 los libros en un espacio físico y virtual acogedor, donde también pueden disfrutar de buen café y
                 alimentos saludables.</p>
         </div>
@@ -203,101 +266,510 @@
 
     <main class="max-w-5xl mx-auto px-6 py-12">
 
-        <!-- CategorÃ­a: CafÃ© -->
+        <!-- Categoría: Café -->
         <section id="cafe" class="mb-32">
-            <div class="border-y-[8px] border-negro py-6 mb-16 bg-brand-dark text-blanco px-4 transform -rotate-1">
-                <h3 class="text-4xl md:text-6xl font-serif font-bold uppercase tracking-title text-center">CafÃ©</h3>
+            <div class="border-y-[8px] border-negro py-6 mb-8 bg-brand-dark text-blanco px-4 transform -rotate-1">
+                <h3 class="text-4xl md:text-6xl font-serif font-bold uppercase tracking-title text-center">Café</h3>
+            </div>
+
+            <!-- Leyenda iconos caliente / frío -->
+            <div
+                class="flex flex-wrap items-center gap-x-6 gap-y-2 mb-12 text-[10px] md:text-xs font-bold uppercase tracking-widest text-brand-dark border-l-4 border-brand-light pl-4">
+                <span class="flex items-center gap-1.5">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="square" stroke-linejoin="miter">
+                        <path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2" />
+                    </svg>
+                    Caliente
+                </span>
+                <span class="flex items-center gap-1.5">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="square" stroke-linejoin="miter">
+                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6" />
+                    </svg>
+                    Frío
+                </span>
             </div>
 
             <!-- Sub: A base de espresso -->
             <div class="mb-16">
-                <h4 class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">
+                <h4
+                    class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">
                     A base de espresso
                 </h4>
-                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest">
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Tradicional</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">CafÃ© de tostiÃ³n intensa, con notas a chocolate, extraÃ­do bajo mÃ©todo de goteo, que le da suavidad y sabor.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Americano</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.500</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">CafÃ© de origen a base de espresso con acidez cÃ­trica y tostiÃ³n media. Â¡Disfruta de sus tonos achocolatados y final a vino!.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Americano Doble</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.500</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">CafÃ© de origen, a base de doble espresso, con acidez cÃ­trica y tostiÃ³n media. Â¡Disfruta de sus tonos achocolatados y final a vino!.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Espresso</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Un shot corto de nuestro mejor cafÃ©.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Doppio</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Doble shot de espresso para un boost de energÃ­a y sabor que te harÃ¡ conquistar el dÃ­a.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">CafÃ© Tonic</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">FusiÃ³n refrescante y burbujeante que une la intensidad del espresso doble con la chispa de la tÃ³nica</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Cortado</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">A base de espresso con un toque de leche espumada.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Mocaccino</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Una combinaciÃ³n de espresso, leche cremada y un toque de chocolate.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Latte <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2"></path></svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path></svg></span></span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Bebida a base cafÃ© espresso, hielo y sedosa capa de espuma de leche y vainilla.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Latte Caramelo <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2"></path></svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path></svg></span></span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Bebida a base cafÃ© espresso, hielo y sedosa capa de espuma de leche y un toque de caramelo.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Capuccino <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2"></path></svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path></svg></span></span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">CafÃ© suave a base de doble espresso, con leche cremada, disfrÃºtalo en su forma original.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Capuccino Vainilla Canela <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2"></path></svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path></svg></span></span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">CafÃ© suave a base de doble espresso, con leche cremada, finalizado con esencia de vainilla y canela.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">CafÃ© Chai</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Un shot de espresso mezclado con tÃ© chai, suavizado con leche cremada. Despierta y reconforta al mismo tiempo.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">CafÃ© Roncrema <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2"></path></svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path></svg></span></span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Base de capuccino, con un shot de crema de ron y endulzado con caÃ±a.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Granizado de cafÃ©</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Refrescante combinaciÃ³n de doble espresso, hielos y un toque de salsa de chocolate.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Afogatto</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Bola de helado de vainilla, ahogado en un trago de espresso.</p></li>
+                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Tradicional</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$3.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Café de tostión intensa, con notas a chocolate, extraído bajo método de goteo, que le da
+                            suavidad y sabor.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Americano</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$6.500</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Café de origen a base de espresso con acidez cítrica y tostión media. ¡Disfruta de sus tonos
+                            achocolatados y final a vino!.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Americano
+                                Doble</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$7.500</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Café de origen, a base de doble espresso, con acidez cítrica y tostión media. ¡Disfruta de
+                            sus tonos achocolatados y final a vino!.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Espresso</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$6.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Un shot corto de nuestro mejor Café.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Doppio</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$7.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Doble shot de espresso para un boost de energía y sabor que te hará conquistar el día.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Café
+                                Tonic</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Fusión refrescante y burbujeante que une la intensidad del espresso doble con la chispa de
+                            la tónica</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Cortado</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$6.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            A base de espresso con un toque de leche espumada.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Mocaccino</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$9.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Una combinación de espresso, leche cremada y un toque de chocolate.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Latte
+                                <span class="inline-flex ml-2 items-center"><svg
+                                        class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path
+                                            d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
+                                        </path>
+                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
+                                    </svg></span></span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$10.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Bebida a base Café espresso, hielo y sedosa capa de espuma de leche y vainilla.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Latte
+                                Caramelo <span class="inline-flex ml-2 items-center"><svg
+                                        class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path
+                                            d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
+                                        </path>
+                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
+                                    </svg></span></span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Bebida a base Café espresso, hielo y sedosa capa de espuma de leche y un toque de caramelo.
+                        </p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Capuccino
+                                <span class="inline-flex ml-2 items-center"><svg
+                                        class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path
+                                            d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
+                                        </path>
+                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
+                                    </svg></span></span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$9.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Café suave a base de doble espresso, con leche cremada, disfrútalo en su forma original.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Capuccino
+                                Vainilla Canela <span class="inline-flex ml-2 items-center"><svg
+                                        class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path
+                                            d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
+                                        </path>
+                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
+                                    </svg></span></span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$10.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Café suave a base de doble espresso, con leche cremada, finalizado con esencia de vainilla y
+                            canela.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Café
+                                Chai</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$12.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Un shot de espresso mezclado con té chai, suavizado con leche cremada. Despierta y
+                            reconforta al mismo tiempo.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Café
+                                Roncrema <span class="inline-flex ml-2 items-center"><svg
+                                        class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path
+                                            d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
+                                        </path>
+                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
+                                    </svg></span></span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Base de capuccino, con un shot de crema de ron y endulzado con caña.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Granizado
+                                de Café</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Refrescante combinación de doble espresso, hielos y un toque de salsa de chocolate.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Afogatto</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Bola de helado de vainilla, ahogado en un trago de espresso.</p>
+                    </li>
                 </ul>
             </div>
 
             <!-- Sub: A base de Cold Brew -->
             <div class="mb-16">
-                <h4 class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">A base de Cold Brew</h4>
-                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest">
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Cold Brew</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">CafÃ© refrescante, infusionado en frio durante varias horas.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Cold Brew Naranja</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">CafÃ© refrescante, infusionado en frio, con un toque cÃ­trico de jugo de naranja.</p></li>
+                <h4
+                    class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">
+                    A base de Cold Brew</h4>
+                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Cold
+                                Brew</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$11.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Café refrescante, infusionado en frio durante varias horas.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Cold
+                                Brew Naranja</span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Café refrescante, infusionado en frio, con un toque cítrico de jugo de naranja.</p>
+                    </li>
                 </ul>
             </div>
 
-            <!-- Sub: Bebidas sin cafÃ© -->
+            <!-- Sub: Bebidas sin Café -->
             <div class="mb-16">
-                <h4 class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">Bebidas sin CafÃ©</h4>
-                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest">
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Chocolatada <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2"></path></svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path></svg></span></span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Cacao orgÃ¡nico al 70% en leche espumosa.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Chai Latte <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2"></path></svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path></svg></span></span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">De origen hindÃº a base de tÃ© negro. acompaÃ±ada de distintas especias y plantas.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Matcha Latte <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2"></path></svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" stroke-linejoin="miter"><path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path></svg></span></span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">De origen asiÃ¡tico con mÃºltiples beneficios, saludable y refrescante. (preparada en bebida de almendras).</p></li>
+                <h4
+                    class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">
+                    Bebidas sin Café</h4>
+                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Chocolatada
+                                <span class="inline-flex ml-2 items-center"><svg
+                                        class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path
+                                            d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
+                                        </path>
+                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
+                                    </svg></span></span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$9.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Cacao orgánico al 70% en leche espumosa.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Chai
+                                Latte <span class="inline-flex ml-2 items-center"><svg
+                                        class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path
+                                            d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
+                                        </path>
+                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
+                                    </svg></span></span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$12.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            De origen hindú a base de té negro. acompañada de distintas especias y plantas.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Matcha
+                                Latte <span class="inline-flex ml-2 items-center"><svg
+                                        class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path
+                                            d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
+                                        </path>
+                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
+                                        stroke-linejoin="miter">
+                                        <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
+                                    </svg></span></span>
+                            <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                        </div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            De origen asiático con múltiples beneficios, saludable y refrescante. (preparada en bebida
+                            de almendras).</p>
+                    </li>
                 </ul>
             </div>
-            
+
             <!-- Sub: Infusiones -->
             <div class="mb-16">
-                <h4 class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">Infusiones</h4>
+                <h4
+                    class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">
+                    Infusiones</h4>
                 <div class="flex items-center justify-between mb-6">
-                    <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-brand-dark">Bebida natural a base de frutas y plantas aromÃ¡ticas.</p>
-                    <span class="bg-[#f4f3f1] px-2 font-bold text-xs md:text-sm">.500</span>
+                    <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-negro">Bebida natural a
+                        base de frutas y plantas aromáticas.</p>
+                    <span class="bg-[#f4f3f1] px-2 font-bold text-xs md:text-sm">$5.500</span>
                 </div>
                 <div class="dotted-line border-brand-dark mb-6 opacity-30"></div>
-                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest pl-4">
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">- Gripal</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Jengibre, limÃ³n y miel ayuda a prevenir los sÃ­ntomas de la gripa.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">- Anti estrÃ©s</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Uva y flores de Bach, ideal para momentos de estrÃ©s elevados.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">- Calma</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">PiÃ±a y naranja. estabiliza el sistema nervioso central y disminuye la ansiedad.</p></li>
-                    <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">- Frutal</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Mix de frutas deshidratadas, uchuva, fresa, piÃ±a.</p></li>
+                <ul
+                    class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest pl-4 text-negro">
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">-
+                                Gripal</span></div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Jengibre, limón y miel ayuda a prevenir los síntomas de la gripa.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">-
+                                Anti estrés</span></div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Uva y flores de Bach, ideal para momentos de estrés elevados.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">-
+                                Calma</span></div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Piña y naranja. estabiliza el sistema nervioso central y disminuye la ansiedad.</p>
+                    </li>
+                    <li class="group">
+                        <div class="flex items-baseline justify-between"><span
+                                class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">-
+                                Frutal</span></div>
+                        <p
+                            class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                            Mix de frutas deshidratadas, uchuva, fresa, piña.</p>
+                    </li>
                 </ul>
-                <p class="text-[10px] md:text-xs text-brand-dark mt-8 normal-case tracking-normal opacity-80 font-bold leading-relaxed">* Puedes solicitar tus bebidas en bebida de almendras por .000</p>
+                <p
+                    class="text-xs md:text-sm text-brand-light mt-8 normal-case tracking-normal font-bold leading-relaxed">
+                    * Puedes solicitar tus bebidas en bebida vegetal por $4.000</p>
             </div>
 
             <!-- Sub: Metodos -->
             <div class="mb-16 p-8 border-[6px] border-negro bg-brand-light relative">
-                <div class="absolute -top-6 -right-6 bg-blanco border-[4px] border-negro p-3 shadow-[4px_4px_0px_rgba(0,0,0,1)] rotate-3 hidden md:block">
-                    <p class="font-bold text-negro uppercase tracking-widest text-xs">Destacado</p>
+                <div
+                    class="absolute -top-4 right-4 md:-top-6 md:-right-6 bg-blanco border-[4px] border-negro p-2 md:p-3 shadow-[4px_4px_0px_rgba(0,0,0,1)] rotate-3">
+                    <p class="font-bold text-negro uppercase tracking-widest text-[10px] md:text-xs">Destacado</p>
                 </div>
-                <h4 class="text-3xl md:text-4xl font-serif font-bold uppercase tracking-title text-negro mb-10 flex items-center gap-4">MÃ©todos</h4>
-                <ul class="space-y-6 md:space-y-8 text-xs md:text-sm font-bold uppercase tracking-widest">
+                <h4
+                    class="text-3xl md:text-4xl font-serif font-bold uppercase tracking-title text-negro mb-10 flex items-center gap-4">
+                    Métodos</h4>
+                <ul class="space-y-6 md:space-y-8 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
                     <li class="flex flex-col md:flex-row justify-between group gap-4 items-start md:items-center">
                         <div class="flex items-center gap-4 z-10 bg-brand-light pr-4">
-                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg class="w-8 h-8 md:w-10 md:h-10 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"><path d="M7 8h10v12H7z M12 2v6 M9 2h6 M6 13h12" /></svg></span>
+                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg
+                                    class="w-8 h-8 md:w-10 md:h-10 shrink-0" viewBox="0 0 32 32" fill="none"
+                                    stroke="currentColor" stroke-width="1.6" stroke-linecap="square"
+                                    stroke-linejoin="miter">
+                                    <!-- Knob -->
+                                    <rect x="13" y="1" width="6" height="3" />
+                                    <!-- Lid -->
+                                    <rect x="5" y="4" width="22" height="2.5" />
+                                    <!-- Body -->
+                                    <rect x="7" y="6.5" width="18" height="18" />
+                                    <!-- Base -->
+                                    <rect x="4" y="24.5" width="24" height="3" />
+                                    <!-- Plunger rod -->
+                                    <line x1="16" y1="6.5" x2="16" y2="19" />
+                                    <!-- Filter plate -->
+                                    <line x1="9" y1="19" x2="23" y2="19" />
+                                    <!-- Handle -->
+                                    <path d="M25 9 C30 9 30 22 25 22" />
+                                </svg></span>
                             <div class="flex flex-col">
-                                <span class="transition-colors group-hover:text-blanco text-sm md:text-base">Prensa Francesa</span>
-                                <p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-sm group-hover:text-blanco transition-colors">Perfil mÃ¡s redondo y dulce, con cuerpo denso. Se intensifican los sabores a panela y frutas maduras. *Disponible en 2 o 4 tazas.</p>
+                                <span class="transition-colors group-hover:text-blanco text-sm md:text-base">Prensa
+                                    Francesa</span>
+                                <p
+                                    class="text-xs md:text-sm text-negro mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-sm group-hover:text-blanco transition-colors">
+                                    Perfil más redondo y dulce, con cuerpo denso. Se intensifican los sabores a panela y
+                                    frutas maduras. *Disponible en 2 o 4 tazas.</p>
                             </div>
                         </div>
                         <div class="hidden md:block dotted-line border-negro opacity-50 flex-grow mx-4"></div>
-                        <span class="bg-brand-light pl-0 md:pl-4 z-10 md:text-right w-full md:w-auto text-sm md:text-base font-bold whitespace-nowrap">$ 13.000</span>
+                        <span
+                            class="bg-brand-light pl-0 md:pl-4 z-10 md:text-right w-full md:w-auto text-sm md:text-base font-bold whitespace-nowrap">$
+                            13.000</span>
                     </li>
                     <li class="flex flex-col md:flex-row justify-between group gap-4 items-start md:items-center">
                         <div class="flex items-center gap-4 z-10 bg-brand-light pr-4">
-                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg class="w-8 h-8 md:w-10 md:h-10 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="miter"><path d="M4 4h16l-8 12L4 4z M9 16v4h6v-4" /></svg></span>
+                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg
+                                    class="w-8 h-8 md:w-10 md:h-10 shrink-0" viewBox="0 0 32 32" fill="none"
+                                    stroke="currentColor" stroke-width="1.6" stroke-linecap="square"
+                                    stroke-linejoin="miter">
+                                    <!-- Top rim -->
+                                    <line x1="3" y1="4" x2="29" y2="4" />
+                                    <!-- Left tab handle -->
+                                    <line x1="3" y1="4" x2="3" y2="9" />
+                                    <!-- Right tab handle -->
+                                    <line x1="29" y1="4" x2="29" y2="9" />
+                                    <!-- Cone left side -->
+                                    <line x1="3" y1="4" x2="16" y2="26" />
+                                    <!-- Cone right side -->
+                                    <line x1="29" y1="4" x2="16" y2="26" />
+                                    <!-- Spout -->
+                                    <line x1="16" y1="26" x2="16" y2="30" />
+                                    <!-- Inner rib left -->
+                                    <line x1="9" y1="7" x2="13.5" y2="20" />
+                                    <!-- Inner rib right -->
+                                    <line x1="23" y1="7" x2="18.5" y2="20" />
+                                </svg></span>
                             <div class="flex flex-col">
                                 <span class="transition-colors group-hover:text-blanco text-sm md:text-base">V60</span>
-                                <p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-sm group-hover:text-blanco transition-colors">ExtracciÃ³n limpia y brillante que resalta notas florales y cÃ­tricas. Ideal para percibir su acidez viva. *Disponible en 2 tazas.</p>
+                                <p
+                                    class="text-xs md:text-sm text-negro mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-sm group-hover:text-blanco transition-colors">
+                                    Extracción limpia y brillante que resalta notas florales y cítricas. Ideal para
+                                    percibir su acidez viva. *Disponible en 2 tazas.</p>
                             </div>
                         </div>
                         <div class="hidden md:block dotted-line border-negro opacity-50 flex-grow mx-4"></div>
-                        <span class="bg-brand-light pl-0 md:pl-4 z-10 md:text-right w-full md:w-auto text-sm md:text-base font-bold whitespace-nowrap">$ 16.000</span>
+                        <span
+                            class="bg-brand-light pl-0 md:pl-4 z-10 md:text-right w-full md:w-auto text-sm md:text-base font-bold whitespace-nowrap">$
+                            16.000</span>
                     </li>
                 </ul>
             </div>
@@ -305,66 +777,333 @@
             <!-- Sub: Otras Bebidas & Cervezas -->
             <div class="grid md:grid-cols-2 gap-12 mt-16">
                 <div>
-                    <h4 class="text-2xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-light pb-2">Otras Bebidas</h4>
-                    <ul class="space-y-4 text-xs md:text-sm font-bold uppercase tracking-widest">
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">TÃ© HatsÃº</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Amarillo: Carambolo/loto. Blanco: TÃ© blanco/mangostino. Negro: TÃ© negro/limÃ³n. Morado: TÃ© blanco/cerezo.</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Sodas</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Refrescante y con sabores de frutas naturales. Frutos rojos (Mora y Uva) â€¢ Frutos amarillos (Naranja y maracuyÃ¡).</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Soda Michelada</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Bebida gasificada, hielos y limÃ³n. Escarchado con sal.</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Soda HatsÃº</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">LimÃ³n y hierbabuena â€¢ SandÃ­a y albahaca â€¢ Uva Blanca y romero â€¢ Frambuesa y rosas.</p></li>
+                    <h4
+                        class="text-2xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-light pb-2">
+                        Otras Bebidas</h4>
+                    <ul class="space-y-4 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Té
+                                    Hatsú</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$7.000</span>
+                            </div>
+                            <ul
+                                class="text-xs md:text-sm text-brand-dark mt-2 normal-case tracking-normal font-normal leading-relaxed max-w-xl space-y-1 pl-1">
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span><strong
+                                            class="font-semibold">Amarillo:</strong> Carambolo / Loto</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span><strong
+                                            class="font-semibold">Blanco:</strong> Té blanco / Mangostino</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span><strong
+                                            class="font-semibold">Negro:</strong> Té negro / Limón</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span><strong
+                                            class="font-semibold">Morado:</strong> Té blanco / Cerezo</span></li>
+                            </ul>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Sodas</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                            </div>
+                            <ul
+                                class="text-xs md:text-sm text-brand-dark mt-2 normal-case tracking-normal font-normal leading-relaxed max-w-xl space-y-1 pl-1">
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Frutos rojos: Mora y
+                                        Uva</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Frutos amarillos:
+                                        Naranja y Maracuyá</span></li>
+                            </ul>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Soda
+                                    Michelada</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$6.000</span>
+                            </div>
+                            <p
+                                class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                                Bebida gasificada, hielos y limón. Escarchado con sal.</p>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Soda
+                                    Hatsú</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$6.000</span>
+                            </div>
+                            <ul
+                                class="text-xs md:text-sm text-brand-dark mt-2 normal-case tracking-normal font-normal leading-relaxed max-w-xl space-y-1 pl-1">
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Limón y
+                                        hierbabuena</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Sandía y albahaca</span>
+                                </li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Uva blanca y
+                                        romero</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Frambuesa y rosas</span>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-2xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-light pb-2">Cervezas Artesanales</h4>
-                    <ul class="space-y-4 text-xs md:text-sm font-bold uppercase tracking-widest mb-4">
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Tres Cordilleras</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Roja Comarca</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Negra Mordor</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div></li>
+                    <h4
+                        class="text-2xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-light pb-2">
+                        Cervezas Artesanales</h4>
+                    <ul class="space-y-4 text-xs md:text-sm font-bold uppercase tracking-widest mb-4 text-negro">
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Tres
+                                    Cordilleras</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$12.000</span>
+                            </div>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Roja
+                                    Comarca</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$15.000</span>
+                            </div>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Negra
+                                    Mordor</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$15.000</span>
+                            </div>
+                        </li>
                     </ul>
-                    <p class="text-[10px] md:text-xs text-brand-dark normal-case tracking-normal opacity-80 font-normal leading-relaxed">* Espumosa bebida de origen. Â¡Disfruta de sus diferentes presentaciones y tonalidades!</p>
+                    <p
+                        class="text-xs md:text-sm text-brand-light normal-case tracking-normal font-normal leading-relaxed">
+                        * Espumosa bebida de origen. ¡Disfruta de sus diferentes presentaciones y tonalidades!</p>
                 </div>
             </div>
         </section>
 
-        <!-- CategorÃ­a: ReposterÃ­a -->
+        <!-- Categoría: Repostería -->
         <section id="reposteria" class="mb-32">
             <div class="border-y-[8px] border-negro py-6 mb-16 bg-brand-light text-negro px-4 transform rotate-1">
-                <h3 class="text-4xl md:text-6xl font-serif font-bold uppercase tracking-title text-center">ReposterÃ­a</h3>
+                <h3 class="text-4xl md:text-6xl font-serif font-bold uppercase tracking-title text-center">Repostería
+                </h3>
             </div>
 
             <div class="grid md:grid-cols-2 gap-16">
                 <!-- Sub: Panes -->
                 <div>
-                    <h4 class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-dark pb-2 inline-block">Panes & Salados</h4>
-                    <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest">
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Palito De Queso</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Elaborado a partir de mantequilla 100% natural, relleno de queso campesino y finalizado con parmesano.</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Croissants</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Tres quesos | Espinaca y queso | Almendras | Pistacho | Cheesecake</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Rollo De Canela</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Hecho con mantequilla natural, crema de canela y frosting de nuez del nogal.</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Empanadas Argentinas</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Fugazzeta | Capresse | Espinaca y queso</p></li>
+                    <h4
+                        class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-dark pb-2 inline-block">
+                        Panes y Salados</h4>
+                    <ul
+                        class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Palito
+                                    De Queso</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$9.000</span>
+                            </div>
+                            <p
+                                class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                                Elaborado a partir de mantequilla 100% natural, relleno de queso campesino y finalizado
+                                con parmesano.</p>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Croissants</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$10.000</span>
+                            </div>
+                            <ul
+                                class="text-xs md:text-sm text-brand-dark mt-3 normal-case tracking-normal font-normal leading-relaxed max-w-xl space-y-3 pl-1">
+                                <li class="flex flex-col gap-0.5">
+                                    <span class="flex items-center gap-2"><span
+                                            class="text-brand-light font-bold">—</span><strong
+                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Tres
+                                            Quesos</strong></span>
+                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Mezcla de
+                                        quesos campesino, mozzarella y parmesano.</p>
+                                </li>
+                                <li class="flex flex-col gap-0.5">
+                                    <span class="flex items-center gap-2"><span
+                                            class="text-brand-light font-bold">—</span><strong
+                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Espinaca
+                                            y Queso</strong></span>
+                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Relleno de
+                                        queso campesino, sal de ajo, espinaca, finalizado con ajonjolí blanco.</p>
+                                </li>
+                                <li class="flex flex-col gap-0.5">
+                                    <span class="flex items-center gap-2"><span
+                                            class="text-brand-light font-bold">—</span><strong
+                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Almendras</strong></span>
+                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Relleno de
+                                        crema pastelera de almendras, finalizado con láminas de almendras.</p>
+                                </li>
+                                <li class="flex flex-col gap-0.5">
+                                    <span class="flex items-center gap-2"><span
+                                            class="text-brand-light font-bold">—</span><strong
+                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Pistacho</strong></span>
+                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Relleno de
+                                        frangipane de miel y pistachos, finalizado con pistachos triturados.</p>
+                                </li>
+                                <li class="flex flex-col gap-0.5">
+                                    <span class="flex items-center gap-2"><span
+                                            class="text-brand-light font-bold">—</span><strong
+                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Cheesecake</strong></span>
+                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Relleno de
+                                        galleta triturada, cheesecake y dulce de frutos rojos. Finalizado con crema de
+                                        queso, arándanos frescos y fresas.</p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Rollo
+                                    De Canela</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$9.000</span>
+                            </div>
+                            <p
+                                class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                                Hecho con mantequilla natural, crema de canela y frosting de nuez del nogal.</p>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Empanadas
+                                    Argentinas</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$11.000</span>
+                            </div>
+                            <ul
+                                class="text-xs md:text-sm text-brand-dark mt-3 normal-case tracking-normal font-normal leading-relaxed max-w-xl space-y-3 pl-1">
+                                <li class="flex flex-col gap-0.5">
+                                    <span class="flex items-center gap-2"><span
+                                            class="text-brand-light font-bold">—</span><strong
+                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Fugazzeta</strong></span>
+                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Rellena de
+                                        cebolla caramelizada, mozzarella y un toque de orégano.</p>
+                                </li>
+                                <li class="flex flex-col gap-0.5">
+                                    <span class="flex items-center gap-2"><span
+                                            class="text-brand-light font-bold">—</span><strong
+                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Capresse</strong></span>
+                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Rellena con
+                                        tomate fresco, mozzarella y albahaca, ideal para los amantes de lo clásico.</p>
+                                </li>
+                                <li class="flex flex-col gap-0.5">
+                                    <span class="flex items-center gap-2"><span
+                                            class="text-brand-light font-bold">—</span><strong
+                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Espinaca
+                                            y Queso</strong></span>
+                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Rellena de
+                                        espinacas frescas, ricota y un toque de nuez moscada.</p>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
 
                 <!-- Sub: Tortas y postres -->
                 <div>
-                    <h4 class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-dark pb-2 inline-block">Tortas y Postres</h4>
-                    <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest">
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Torta De Zanahoria</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Bizcocho de zanahoria, relleno con crema de manÃ­, cubierto con ManÃ­ molido.</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Torta De LimÃ³n y Amapola</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Bizcocho de limÃ³n y semillas de amapola, relleno de crema alimonada de almendras, cubierto con crema de coco.</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Muffin de guayaba y queso</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Elaborado con masa de queso y centro de guayaba, Lo mejor de lo dulce y lo salado.</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Galletas</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Avena | Macadamia | Chocolate | Doble Chocolate | Red Velvet | Pistacho</p></li>
-                        <li class="group"><div class="flex items-baseline justify-between"><span class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Alfajor</span><div class="dotted-line group-hover:border-negro transition-colors"></div><span class="bg-[#f4f3f1] pl-4 z-10 opacity-90">.000</span></div><p class="text-[10px] md:text-xs text-brand-dark mt-1 normal-case tracking-normal opacity-80 font-normal leading-relaxed max-w-xl">Deliciosas galletas rellenas de arequipe.</p></li>
+                    <h4
+                        class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-dark pb-2 inline-block">
+                        Tortas y Postres</h4>
+                    <ul
+                        class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Torta
+                                    De Zanahoria</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                            </div>
+                            <p
+                                class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                                Bizcocho de zanahoria, relleno con crema de maní, cubierto con Maní molido.</p>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Torta
+                                    De Limón y Amapola</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$13.000</span>
+                            </div>
+                            <p
+                                class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                                Bizcocho de limón y semillas de amapola, relleno de crema alimonada de almendras,
+                                cubierto con crema de coco.</p>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Muffin
+                                    de guayaba y queso</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$9.000</span>
+                            </div>
+                            <p
+                                class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                                Elaborado con masa de queso y centro de guayaba, Lo mejor de lo dulce y lo salado.</p>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Galletas</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$9.000</span>
+                            </div>
+                            <ul
+                                class="text-xs md:text-sm text-brand-dark mt-2 normal-case tracking-normal font-normal leading-relaxed max-w-xl space-y-1 pl-1">
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Avena</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Macadamia</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Chocolate</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Doble Chocolate</span>
+                                </li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Red Velvet</span></li>
+                                <li class="flex items-start gap-2"><span
+                                        class="text-brand-light font-bold mt-0.5">—</span><span>Pistacho</span></li>
+                            </ul>
+                        </li>
+                        <li class="group">
+                            <div class="flex items-baseline justify-between"><span
+                                    class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Alfajor</span>
+                                <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                    class="bg-[#f4f3f1] pl-4 z-10 opacity-90">$9.000</span>
+                            </div>
+                            <p
+                                class="text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl">
+                                Deliciosas galletas rellenas de arequipe.</p>
+                        </li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <!-- SecciÃ³n Falsa de Libros -->
+        <!-- Sección Falsa de Libros -->
         <section id="libros" class="mb-32">
             <div class="border-y-[8px] border-negro py-6 mb-16 bg-brand-dark text-blanco px-4 transform -rotate-1">
                 <h3 class="text-4xl md:text-6xl font-serif font-bold uppercase tracking-title text-center">Libros</h3>
             </div>
             <div class="text-center bg-brand-light border-[6px] border-negro p-12">
-                <p class="text-xl md:text-2xl font-serif font-bold uppercase tracking-title text-negro">SelecciÃ³n disponible en tienda</p>
-                <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-brand-dark mt-4">Nuestros libros rotan cada semana. VisÃ­tanos para descubrir nuestras recomendaciones.</p>
+                <p class="text-xl md:text-2xl font-serif font-bold uppercase tracking-title text-negro">Selección
+                    disponible en tienda</p>
+                <p class="text-xs md:text-sm font-bold uppercase tracking-widest text-brand-dark mt-4">Nuestros libros
+                    rotan cada semana. Visítanos para descubrir nuestras recomendaciones.</p>
             </div>
         </section>
 
@@ -380,7 +1119,7 @@
         <div class="absolute inset-0 z-20 flex items-center justify-center p-6 text-center">
             <h2
                 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-blanco uppercase tracking-title drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
-                Refugios Libros y Café</h2>
+                Un espacio para la pausa</h2>
         </div>
     </section>
 
@@ -395,7 +1134,8 @@
                     class="not-italic text-xs md:text-sm font-bold flex flex-col space-y-8 uppercase tracking-widest">
                     <div class="border-l-[6px] border-brand-light pl-6">
                         <span class="block text-brand-light mb-2">Ubicación</span>
-                        <p class="leading-snug">Calle 51 · 48 53 Itagui <br> Centro comercial la gran manzana</p>
+                        <p class="leading-snug">Calle 51 · 48 53 Itagüí <br> Centro Comercial La Gran Manzana · Local 5
+                        </p>
                     </div>
                     <div class="border-l-[6px] border-brand-light pl-6">
                         <span class="block text-brand-light mb-2">Horario</span>
@@ -405,7 +1145,7 @@
             </div>
 
             <div class="flex flex-col items-start lg:items-end gap-10 w-full lg:w-auto h-full justify-between">
-                <a href="#"
+                <a href="https://share.google/ZS5OoGDSBjGHOZ99e" target="_blank" rel="noopener noreferrer"
                     class="border-[6px] border-blanco bg-negro text-blanco px-8 py-4 text-xs md:text-sm font-bold uppercase tracking-widest hover:bg-blanco hover:text-negro transition-colors w-full lg:w-auto text-center shadow-[6px_6px_0px_rgba(161,136,127,1)] hover:translate-y-1 hover:shadow-none">
                     Ver en Mapa
                 </a>
@@ -418,6 +1158,62 @@
             <p>© 2026 Refugios Libros y Cafe.</p>
         </div>
     </footer>
+
+    <!-- Botón volver arriba -->
+    <button id="back-to-top" aria-label="Volver al inicio" title="Volver al inicio">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="square" stroke-linejoin="miter">
+            <path d="M18 15l-6-6-6 6" />
+        </svg>
+    </button>
+
+    <script>
+            // ── Scroll-spy: resalta el link activo según la sección visible ──
+            (function () {
+                const sections = ['cafe', 'reposteria', 'libros'];
+                const navLinks = {};
+                sections.forEach(id => {
+                    const link = document.querySelector('#nav-desktop a[href="#' + id + '"]');
+                    if (link) navLinks[id] = link;
+                });
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const id = entry.target.id;
+                        const link = navLinks[id];
+                        if (!link) return;
+                        if (entry.isIntersecting) {
+                            // Quita activo de todos
+                            Object.values(navLinks).forEach(l => l.classList.remove('nav-active'));
+                            link.classList.add('nav-active');
+                        }
+                    });
+                }, {
+                    rootMargin: '-20% 0px -60% 0px',
+                    threshold: 0
+                });
+
+                sections.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) observer.observe(el);
+                });
+            })();
+
+        // ── Botón volver arriba ──
+        (function () {
+            const btn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 400) {
+                    btn.classList.add('visible');
+                } else {
+                    btn.classList.remove('visible');
+                }
+            }, { passive: true });
+            btn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        })();
+    </script>
 
 </body>
 
