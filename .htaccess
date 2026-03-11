@@ -1,5 +1,7 @@
-# Priorizar index.html sobre index.php
-DirectoryIndex index.html index.php
+# Forzar index.html como página de inicio y desactivar index.php
+DirectoryIndex index.html
+FallbackResource /index.html
+
 
 # Evitar listado de directorios
 Options -Indexes
