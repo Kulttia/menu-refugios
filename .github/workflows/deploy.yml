@@ -1,0 +1,29 @@
+name: 🚀 Deploy a Hostinger
+
+on:
+  push:
+    branches:
+      - main  # Se ejecuta cada vez que se hace push a main
+
+jobs:
+  deploy:
+    name: Deploy por FTP a Hostinger
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Descargar código
+        uses: actions/checkout@v4
+
+      - name: 📤 Subir archivos a Hostinger por FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          # Excluir archivos que no deben subirse al servidor
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .github/**
