@@ -1,0 +1,5 @@
+# Priorizar index.html sobre index.php
+DirectoryIndex index.html index.php
+
+# Evitar listado de directorios
+Options -Indexes
