@@ -21,10 +21,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          # Incluir archivos ocultos como .htaccess
-          include: |
-            **
-            .htaccess
           # Excluir archivos que no deben subirse al servidor
           exclude: |
             **/.git*
