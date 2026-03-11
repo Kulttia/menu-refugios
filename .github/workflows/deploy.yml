@@ -21,6 +21,10 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          # Opciones recomendadas para Hostinger:
+          protocol: ftp
+          port: 21
+          timeout: 90000 
           # Excluir archivos que no deben subirse al servidor
           exclude: |
             **/.git*
