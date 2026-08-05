@@ -1,0 +1,9 @@
+# Normalizar saltos de linea en el codigo fuente
+* text=auto eol=lf
+
+# Archivos de terceros: dejarlos byte a byte como vienen del proveedor
+js/alpine.min.js -text
+
+*.png binary
+*.jpg binary
+*.jpeg binary

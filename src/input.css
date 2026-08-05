@@ -1,0 +1,7 @@
+/* Entrada de Tailwind. Se compila a ../css/tailwind.css con: npm run build
+   Los estilos propios del sitio siguen inline en index.html a proposito:
+   asi el layout basico y el tamano de los iconos funcionan aunque este
+   archivo CSS no llegue a cargar. */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

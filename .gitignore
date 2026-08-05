@@ -1,0 +1,5 @@
+node_modules/
+
+# CSS generado por Tailwind. Se compila en el CI antes de subir a Hostinger.
+# Para trabajar en local: npm install && npm run build
+css/tailwind.css

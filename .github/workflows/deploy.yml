@@ -21,7 +21,23 @@ jobs:
 
     steps:
       - name: ⬇️ Descargar código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: ⚙️ Preparar Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 📦 Instalar dependencias
+        run: npm ci
+
+      - name: 🎨 Compilar Tailwind
+        run: npm run build
+
+      # Si el CSS no se genero, es mejor abortar que subir la pagina sin estilos
+      - name: ✅ Verificar que el CSS existe
+        run: test -s css/tailwind.css
 
       - name: 📤 Subir archivos a Hostinger por FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -34,10 +50,14 @@ jobs:
           # FTPS cifra la conexion. Si Hostinger rechaza, probar: ftps-legacy
           protocol: ftps
           timeout: 90000
-          # Excluir archivos que no deben subirse al servidor
+          # Excluir del servidor todo lo que es solo para desarrollo
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
             .github/**
             **/*.md
+            src/**
+            package.json
+            package-lock.json
+            tailwind.config.js

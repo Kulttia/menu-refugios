@@ -7,12 +7,10 @@
     <title>Menú Refugios</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="apple-touch-icon" href="img/favicon.png">
-    <!-- Tailwind CSS CDN (version fija: evita que un cambio del CDN rompa el sitio) -->
-    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-    <!-- Alpine.js (version fija + SRI: el navegador rechaza el archivo si fue alterado) -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"
-        integrity="sha384-9Ax3MmS9AClxJyd5/zafcXXjxmwFhZCdsT6HJoJjarvCaAkJlk5QDzjLJm+Wdx5F"
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Tailwind compilado localmente (npm run build). Sin CDN, sin JS en runtime. -->
+    <link rel="stylesheet" href="css/tailwind.css">
+    <!-- Alpine.js servido desde el propio dominio (v3.14.9) -->
+    <script defer src="js/alpine.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Playfair Display y Montserrat -->
@@ -20,7 +18,7 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700;900&display=swap"
         rel="stylesheet">
     <style>
-        /* --- Base de seguridad: aplica aunque el CDN de Tailwind no cargue --- */
+        /* --- Base de seguridad: aplica aunque css/tailwind.css no llegue a cargar --- */
         *,
         *::before,
         *::after {
@@ -39,9 +37,9 @@
             max-width: 100%;
         }
 
-        /* Los iconos SVG solo tenian tamano via clases de Tailwind: si el CDN
-           falla o tarda, el navegador los dibuja a 300x150px. Este respaldo y los
-           atributos width/height del HTML evitan que se vean gigantes. */
+        /* Un SVG sin tamano se dibuja a 300x150px. Este respaldo, junto con los
+           atributos width/height del HTML, garantiza el tamano correcto aunque
+           la hoja de estilos no cargue. */
         svg {
             width: 1rem;
             height: 1rem;
@@ -133,30 +131,7 @@
             transform: translateY(2px);
         }
     </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            dark: '#4e342e',
-                            light: '#a1887f',
-                        },
-                        negro: '#1a1a1a',
-                        blanco: '#fafafa',
-                    },
-                    fontFamily: {
-                        sans: ['Montserrat', 'sans-serif'],
-                        serif: ['"Playfair Display"', 'serif'],
-                    },
-                    letterSpacing: {
-                        'title': '0.15em',
-                        'widest': '0.1em',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- La paleta y tipografias del tema viven ahora en tailwind.config.js -->
 </head>
 
 <body class="antialiased min-h-screen border-t-[12px] border-brand-dark">

@@ -1,0 +1,13 @@
+{
+  "name": "menu-refugios",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Menu digital de Refugios Libros y Cafe",
+  "scripts": {
+    "build": "tailwindcss -i ./src/input.css -o ./css/tailwind.css --minify",
+    "dev": "tailwindcss -i ./src/input.css -o ./css/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.16"
+  }
+}

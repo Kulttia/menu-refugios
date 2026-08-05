@@ -23,9 +23,11 @@ Options -Indexes
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
-  # CSP: la pagina es estatica. Tailwind y Alpine requieren 'unsafe-eval'/'unsafe-inline'
-  # por ser CDN con JIT en runtime. Si algun dia se compila el CSS local, endurecer esto.
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+  # CSP: todo el JS y CSS se sirve desde este mismo dominio. Solo quedan
+  # Google Fonts como origen externo.
+  # 'unsafe-eval' sigue siendo necesario porque Alpine.js evalua las
+  # expresiones de x-data / @click con new Function().
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
 </IfModule>
 
 # Bloquear acceso a archivos sensibles
@@ -51,6 +53,8 @@ CacheDisable private /
 </FilesMatch>
 
 # Las imagenes si pueden cachearse (mejora carga en celulares con red lenta)
+# Nota: css/tailwind.css y js/alpine.min.js quedan bajo la regla no-store de
+# arriba a proposito, para que un cambio de menu se vea de inmediato.
 <FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|woff2?)$">
   <IfModule mod_headers.c>
      Header set Cache-Control "public, max-age=2592000"
