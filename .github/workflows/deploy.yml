@@ -5,26 +5,39 @@ on:
     branches:
       - main  # Se ejecuta cada vez que se hace push a main
 
+# El token de GitHub solo necesita leer el repositorio
+permissions:
+  contents: read
+
+# Evita que dos despliegues se pisen si haces varios push seguidos
+concurrency:
+  group: deploy-hostinger
+  cancel-in-progress: false
+
 jobs:
   deploy:
-    name: Deploy por FTP a Hostinger
+    name: Deploy por FTPS a Hostinger
     runs-on: ubuntu-latest
 
     steps:
       - name: ⬇️ Descargar código
         uses: actions/checkout@v4
 
-      - name: 📤 Subir archivos a Hostinger por FTP
+      - name: 📤 Subir archivos a Hostinger por FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
-          timeout: 90000 
+          # FTP plano envia usuario y contraseña sin cifrar por internet.
+          # FTPS cifra la conexion. Si Hostinger rechaza, probar: ftps-legacy
+          protocol: ftps
+          timeout: 90000
           # Excluir archivos que no deben subirse al servidor
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
             .github/**
+            **/*.md

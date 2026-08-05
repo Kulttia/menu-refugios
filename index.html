@@ -7,10 +7,12 @@
     <title>Menú Refugios</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
     <link rel="apple-touch-icon" href="img/favicon.png">
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Tailwind CSS CDN (version fija: evita que un cambio del CDN rompa el sitio) -->
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <!-- Alpine.js (version fija + SRI: el navegador rechaza el archivo si fue alterado) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.9/dist/cdn.min.js"
+        integrity="sha384-9Ax3MmS9AClxJyd5/zafcXXjxmwFhZCdsT6HJoJjarvCaAkJlk5QDzjLJm+Wdx5F"
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Playfair Display y Montserrat -->
@@ -18,6 +20,39 @@
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@400;700;900&display=swap"
         rel="stylesheet">
     <style>
+        /* --- Base de seguridad: aplica aunque el CDN de Tailwind no cargue --- */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            max-width: 100%;
+            /* clip (no hidden) para no romper el header sticky */
+            overflow-x: clip;
+        }
+
+        img,
+        svg {
+            max-width: 100%;
+        }
+
+        /* Los iconos SVG solo tenian tamano via clases de Tailwind: si el CDN
+           falla o tarda, el navegador los dibuja a 300x150px. Este respaldo y los
+           atributos width/height del HTML evitan que se vean gigantes. */
+        svg {
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+        }
+
+        #back-to-top svg {
+            width: 20px;
+            height: 20px;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: #f4f3f1;
@@ -152,7 +187,7 @@
                     class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1">Libros</a>
                 <a href="https://wa.me/+573238113985" target="_blank" rel="noopener noreferrer"
                     class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1 flex items-center gap-1.5">
-                    <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="14" height="14" class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
                         <path
@@ -190,7 +225,7 @@
                 <a @click="mobileMenuOpen = false; document.body.classList.remove('no-scroll')"
                     href="https://wa.me/+573238113985" target="_blank" rel="noopener noreferrer"
                     class="border-b-[6px] border-brand-light pb-2 hover:text-brand-dark w-full text-left transition-colors flex items-center gap-3">
-                    <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="24" height="24" class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
                         <path
                             d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
                         <path
@@ -223,13 +258,13 @@
 
         <button @click="currentSlide = currentSlide > 0 ? currentSlide - 1 : slides.length - 1"
             class="absolute top-1/2 left-4 -translate-y-1/2 z-20 w-14 h-14 bg-blanco border-[4px] border-negro flex items-center justify-center hover:bg-brand-light hover:text-blanco transition-colors cursor-pointer text-negro shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none">
-            <svg class="w-8 h-8 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg width="32" height="32" class="w-8 h-8 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="3" d="M9 5l7 7-7 7"></path>
             </svg>
         </button>
         <button @click="currentSlide = currentSlide < slides.length - 1 ? currentSlide + 1 : 0"
             class="absolute top-1/2 right-4 -translate-y-1/2 z-20 w-14 h-14 bg-blanco border-[4px] border-negro flex items-center justify-center hover:bg-brand-light hover:text-blanco transition-colors cursor-pointer text-negro shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg width="32" height="32" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="square" stroke-linejoin="miter" stroke-width="3" d="M9 5l7 7-7 7"></path>
             </svg>
         </button>
@@ -276,14 +311,14 @@
             <div
                 class="flex flex-wrap items-center gap-x-6 gap-y-2 mb-12 text-[10px] md:text-xs font-bold uppercase tracking-widest text-brand-dark border-l-4 border-brand-light pl-4">
                 <span class="flex items-center gap-1.5">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg width="16" height="16" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="square" stroke-linejoin="miter">
                         <path d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2" />
                     </svg>
                     Caliente
                 </span>
                 <span class="flex items-center gap-1.5">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    <svg width="16" height="16" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="square" stroke-linejoin="miter">
                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6" />
                     </svg>
@@ -387,14 +422,14 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Latte
-                                <span class="inline-flex ml-2 items-center"><svg
+                                <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                         class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path
                                             d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
                                         </path>
-                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                    </svg><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -409,14 +444,14 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Latte
-                                Caramelo <span class="inline-flex ml-2 items-center"><svg
+                                Caramelo <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                         class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path
                                             d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
                                         </path>
-                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                    </svg><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -432,14 +467,14 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Capuccino
-                                <span class="inline-flex ml-2 items-center"><svg
+                                <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                         class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path
                                             d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
                                         </path>
-                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                    </svg><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -454,14 +489,14 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Capuccino
-                                Vainilla Canela <span class="inline-flex ml-2 items-center"><svg
+                                Vainilla Canela <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                         class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path
                                             d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
                                         </path>
-                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                    </svg><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -489,14 +524,14 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Café
-                                Roncrema <span class="inline-flex ml-2 items-center"><svg
+                                Roncrema <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                         class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path
                                             d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
                                         </path>
-                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                    </svg><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -511,7 +546,7 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center flex-wrap gap-y-1">Malteada
-                                de Café <span class="ml-2 px-1.5 py-0.5 text-[9px] md:text-[10px] font-bold uppercase tracking-wider bg-brand-dark text-blanco border-2 border-negro shadow-[2px_2px_0px_rgba(0,0,0,1)] select-none">Nuevo</span> <span class="inline-flex ml-2 items-center"><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                de Café <span class="ml-2 px-1.5 py-0.5 text-[9px] md:text-[10px] font-bold uppercase tracking-wider bg-brand-dark text-blanco border-2 border-negro shadow-[2px_2px_0px_rgba(0,0,0,1)] select-none">Nuevo</span> <span class="inline-flex ml-2 items-center"><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -587,14 +622,14 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Chocolatada
-                                <span class="inline-flex ml-2 items-center"><svg
+                                <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                         class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path
                                             d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
                                         </path>
-                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                    </svg><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -609,14 +644,14 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Chai
-                                Latte <span class="inline-flex ml-2 items-center"><svg
+                                Latte <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                         class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path
                                             d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
                                         </path>
-                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                    </svg><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -631,14 +666,14 @@
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Matcha
-                                Latte <span class="inline-flex ml-2 items-center"><svg
+                                Latte <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                         class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path
                                             d="M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2">
                                         </path>
-                                    </svg><svg class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
+                                    </svg><svg width="16" height="16" class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                         stroke-linejoin="miter">
                                         <path d="M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6"></path>
@@ -717,7 +752,7 @@
                 <ul class="space-y-6 md:space-y-8 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
                     <li class="flex flex-col md:flex-row justify-between group gap-4 items-start md:items-center">
                         <div class="flex items-center gap-4 z-10 bg-brand-light pr-4">
-                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg
+                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg width="32" height="32"
                                     class="w-8 h-8 md:w-10 md:h-10 shrink-0" viewBox="0 0 32 32" fill="none"
                                     stroke="currentColor" stroke-width="1.6" stroke-linecap="square"
                                     stroke-linejoin="miter">
@@ -751,7 +786,7 @@
                     </li>
                     <li class="flex flex-col md:flex-row justify-between group gap-4 items-start md:items-center">
                         <div class="flex items-center gap-4 z-10 bg-brand-light pr-4">
-                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg
+                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg width="32" height="32"
                                     class="w-8 h-8 md:w-10 md:h-10 shrink-0" viewBox="0 0 32 32" fill="none"
                                     stroke="currentColor" stroke-width="1.6" stroke-linecap="square"
                                     stroke-linejoin="miter">
@@ -786,7 +821,7 @@
                     </li>
                     <li class="flex flex-col md:flex-row justify-between group gap-4 items-start md:items-center">
                         <div class="flex items-center gap-4 z-10 bg-brand-light pr-4">
-                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg
+                            <span class="bg-negro text-blanco p-2 md:p-3 rounded-none flex-shrink-0"><svg width="32" height="32"
                                     class="w-8 h-8 md:w-10 md:h-10 shrink-0" viewBox="0 0 32 32" fill="none"
                                     stroke="currentColor" stroke-width="1.6" stroke-linecap="square"
                                     stroke-linejoin="miter">
@@ -965,13 +1000,6 @@
                                 <li class="flex flex-col gap-0.5">
                                     <span class="flex items-center gap-2"><span
                                             class="text-brand-light font-bold">—</span><strong
-                                            class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Pistacho</strong></span>
-                                    <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Relleno de
-                                        frangipane de miel y pistachos, finalizado con pistachos triturados.</p>
-                                </li>
-                                <li class="flex flex-col gap-0.5">
-                                    <span class="flex items-center gap-2"><span
-                                            class="text-brand-light font-bold">—</span><strong
                                             class="font-semibold uppercase tracking-wide text-[11px] md:text-xs">Cheesecake</strong></span>
                                     <p class="pl-5 text-brand-dark font-normal normal-case tracking-normal">Relleno de
                                         galleta triturada, cheesecake y dulce de frutos rojos. Finalizado con crema de
@@ -1076,11 +1104,7 @@
                             <ul
                                 class="text-xs md:text-sm text-brand-dark mt-2 normal-case tracking-normal font-normal leading-relaxed max-w-xl space-y-1 pl-1">
                                 <li class="flex items-start gap-2"><span
-                                        class="text-brand-light font-bold mt-0.5">—</span><span>Avena</span></li>
-                                <li class="flex items-start gap-2"><span
                                         class="text-brand-light font-bold mt-0.5">—</span><span>Macadamia</span></li>
-                                <li class="flex items-start gap-2"><span
-                                        class="text-brand-light font-bold mt-0.5">—</span><span>Chocolate</span></li>
                                 <li class="flex items-start gap-2"><span
                                         class="text-brand-light font-bold mt-0.5">—</span><span>Doble Chocolate</span>
                                 </li>
@@ -1095,7 +1119,7 @@
                                     class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center flex-wrap gap-y-1">Galleta
                                     Avena y Almendras
                                     <span class="ml-2 px-1.5 py-0.5 text-[9px] md:text-[10px] font-bold uppercase tracking-wider bg-brand-dark text-blanco border-2 border-negro shadow-[2px_2px_0px_rgba(0,0,0,1)] select-none">Nuevo</span>
-                                    <span class="inline-flex ml-2 items-center"><svg
+                                    <span class="inline-flex ml-2 items-center"><svg width="16" height="16"
                                             class="w-4 h-4 inline-block ml-1 text-brand-dark" viewBox="0 0 24 24"
                                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"
                                             stroke-linejoin="miter">

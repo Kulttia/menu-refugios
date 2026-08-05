@@ -6,6 +6,33 @@ FallbackResource /index.html
 # Evitar listado de directorios
 Options -Indexes
 
+# Forzar HTTPS
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Cabeceras de seguridad
+<IfModule mod_headers.c>
+  # HSTS: solo se activa sobre HTTPS. Empieza en 1 dia; subir a 31536000 cuando
+  # confirmes que todo el dominio y subdominios funcionan bien en HTTPS.
+  Header always set Strict-Transport-Security "max-age=86400" env=HTTPS
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+  # CSP: la pagina es estatica. Tailwind y Alpine requieren 'unsafe-eval'/'unsafe-inline'
+  # por ser CDN con JIT en runtime. Si algun dia se compila el CSS local, endurecer esto.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+</IfModule>
+
+# Bloquear acceso a archivos sensibles
+<FilesMatch "^\.|(\.(md|yml|yaml|json|lock|sh|bak|log|env)|~)$">
+  Require all denied
+</FilesMatch>
+
 # Deshabilitar LiteSpeed Cache temporalmente
 <IfModule LiteSpeed>
 CacheDisable public /
@@ -16,9 +43,16 @@ CacheDisable private /
 <FilesMatch "\.(html|htm|js|css)$">
   FileETag None
   <IfModule mod_headers.c>
-     Header unset ETag
      Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
      Header set Pragma "no-cache"
      Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+     Header unset ETag
+  </IfModule>
+</FilesMatch>
+
+# Las imagenes si pueden cachearse (mejora carga en celulares con red lenta)
+<FilesMatch "\.(jpg|jpeg|png|gif|webp|svg|ico|woff2?)$">
+  <IfModule mod_headers.c>
+     Header set Cache-Control "public, max-age=2592000"
   </IfModule>
 </FilesMatch>
