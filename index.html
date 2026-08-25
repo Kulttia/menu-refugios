@@ -158,6 +158,8 @@
                     class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1">Café</a>
                 <a href="#reposteria"
                     class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1">Repostería</a>
+                <a href="#para-llevar"
+                    class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1">Para llevar</a>
                 <a href="#libros"
                     class="hover:text-brand-light transition-colors border-b-2 border-transparent hover:border-brand-dark pb-1">Libros</a>
                 <a href="https://wa.me/+573238113985" target="_blank" rel="noopener noreferrer"
@@ -195,6 +197,8 @@
                     class="border-b-[6px] border-brand-light pb-2 hover:text-brand-dark w-full text-left transition-colors">Café</a>
                 <a @click="mobileMenuOpen = false; document.body.classList.remove('no-scroll')" href="#reposteria"
                     class="border-b-[6px] border-brand-light pb-2 hover:text-brand-dark w-full text-left transition-colors">Repostería</a>
+                <a @click="mobileMenuOpen = false; document.body.classList.remove('no-scroll')" href="#para-llevar"
+                    class="border-b-[6px] border-brand-light pb-2 hover:text-brand-dark w-full text-left transition-colors">Para llevar</a>
                 <a @click="mobileMenuOpen = false; document.body.classList.remove('no-scroll')" href="#libros"
                     class="border-b-[6px] border-brand-light pb-2 hover:text-brand-dark w-full text-left transition-colors">Libros</a>
                 <a @click="mobileMenuOpen = false; document.body.classList.remove('no-scroll')"
@@ -914,6 +918,110 @@
             </div>
         </section>
 
+        <!-- Categoría: Café para llevar -->
+        <section id="para-llevar" class="mb-32">
+            <div class="border-y-[8px] border-negro py-6 mb-4 bg-negro text-blanco px-4 transform rotate-1">
+                <h3 class="text-4xl md:text-6xl font-serif font-bold uppercase tracking-title text-center">Café para
+                    llevar</h3>
+            </div>
+            <p class="text-center text-[10px] md:text-xs font-bold uppercase tracking-widest text-brand-dark mb-12">
+                Nuestro café de origen · Edición especial</p>
+
+            <div class="border-[6px] border-negro bg-brand-light shadow-[10px_10px_0px_rgba(26,26,26,1)]">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <!-- Foto principal -->
+                    <div class="relative border-b-[6px] md:border-b-0 md:border-r-[6px] border-negro overflow-hidden">
+                        <img src="img/cafe-bolsa-250.jpg" width="960" height="1200" loading="lazy" decoding="async"
+                            alt="Bolsa de café Refugios de 250 gramos sobre mesa de madera"
+                            class="w-full h-72 md:h-full object-cover">
+                        <span
+                            class="absolute top-4 left-4 bg-blanco border-[4px] border-negro px-3 py-1 text-[10px] md:text-xs font-bold uppercase tracking-widest text-negro transform -rotate-3">Tostado
+                            en Colombia</span>
+                    </div>
+
+                    <!-- Ficha del producto -->
+                    <div class="p-6 md:p-10 bg-blanco">
+                        <h4
+                            class="text-2xl md:text-4xl font-serif font-bold uppercase tracking-title text-brand-dark border-b-[6px] border-brand-light pb-3 inline-block">
+                            Bolsa de café</h4>
+
+                        <p class="text-xs md:text-sm text-brand-dark mt-6 normal-case leading-relaxed font-normal">
+                            El mismo café que sirvemos en la barra, empacado para tu casa. Variedad Colombia de Salgar,
+                            Antioquia: lavado, cultivado a 1.800 msnm y de tostión media, con notas a chocolate, panela
+                            y frutos amarillos.</p>
+
+                        <!-- Ficha técnica -->
+                        <ul
+                            class="grid grid-cols-2 gap-x-4 gap-y-3 mt-8 text-[10px] md:text-xs font-bold uppercase tracking-widest text-negro">
+                            <li class="border-l-4 border-brand-light pl-3"><span
+                                    class="block text-brand-dark">Origen</span>Salgar · Antioquia</li>
+                            <li class="border-l-4 border-brand-light pl-3"><span
+                                    class="block text-brand-dark">Proceso</span>Lavado</li>
+                            <li class="border-l-4 border-brand-light pl-3"><span
+                                    class="block text-brand-dark">Altura</span>1.800 msnm</li>
+                            <li class="border-l-4 border-brand-light pl-3"><span
+                                    class="block text-brand-dark">Tostión</span>Media</li>
+                        </ul>
+
+                        <!-- Presentaciones -->
+                        <div class="mt-10">
+                            <span
+                                class="block text-[10px] md:text-xs font-bold uppercase tracking-widest text-brand-dark mb-4">Presentaciones</span>
+                            <ul class="space-y-4 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                                <li class="group">
+                                    <div class="flex items-baseline justify-between"><span
+                                            class="bg-blanco pr-4 z-10 transition-colors group-hover:text-brand-dark">250
+                                            gr</span>
+                                        <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                            class="bg-blanco pl-4 z-10 opacity-90">35.000</span>
+                                    </div>
+                                </li>
+                                <li class="group">
+                                    <div class="flex items-baseline justify-between"><span
+                                            class="bg-blanco pr-4 z-10 transition-colors group-hover:text-brand-dark">500
+                                            gr</span>
+                                        <div class="dotted-line group-hover:border-negro transition-colors"></div><span
+                                            class="bg-blanco pl-4 z-10 opacity-90">60.000</span>
+                                    </div>
+                                </li>
+                            </ul>
+                            <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-brand-dark mt-5">
+                                En grano o molido · Lo molemos según tu método</p>
+                        </div>
+
+                        <!-- Llamados a la acción -->
+                        <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                            <a href="https://refugios.co/producto/bolsa-cafe-edicion-especial/" target="_blank"
+                                rel="noopener noreferrer"
+                                class="flex-1 text-center px-6 py-4 bg-negro border-[4px] border-negro font-bold uppercase tracking-widest text-xs md:text-sm text-blanco shadow-[4px_4px_0px_rgba(161,136,127,1)] hover:bg-brand-dark hover:translate-y-1 hover:shadow-none transition-all duration-200 cursor-pointer">
+                                Comprar en la web
+                            </a>
+                            <a href="https://wa.me/+573238113985?text=Hola%2C%20quiero%20una%20bolsa%20de%20caf%C3%A9%20Refugios"
+                                target="_blank" rel="noopener noreferrer"
+                                class="flex-1 text-center px-6 py-4 bg-blanco border-[4px] border-negro font-bold uppercase tracking-widest text-xs md:text-sm text-negro shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:bg-brand-dark hover:text-blanco hover:translate-y-1 hover:shadow-none transition-all duration-200 cursor-pointer">
+                                Pedir en barra
+                            </a>
+                        </div>
+                        <p class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-brand-dark mt-4">
+                            Pídelo en barra o recíbelo en casa desde la tienda en línea</p>
+                    </div>
+                </div>
+
+                <!-- Tira de fotos -->
+                <div class="grid grid-cols-3 border-t-[6px] border-negro">
+                    <img src="img/cafe-bolsa-500.jpg" width="900" height="1200" loading="lazy" decoding="async"
+                        alt="Bolsa de café Refugios de 500 gramos"
+                        class="w-full h-32 md:h-56 object-cover border-r-[6px] border-negro">
+                    <img src="img/cafe-bolsa-detalle.jpg" width="900" height="1200" loading="lazy" decoding="async"
+                        alt="Detalle de la etiqueta con el perfil de taza del café"
+                        class="w-full h-32 md:h-56 object-cover border-r-[6px] border-negro">
+                    <img src="img/cafe-bolsa-marca.jpg" width="900" height="1200" loading="lazy" decoding="async"
+                        alt="Bolsa de café Refugios con el logo de la marca"
+                        class="w-full h-32 md:h-56 object-cover">
+                </div>
+            </div>
+        </section>
+
         <!-- Categoría: Repostería -->
         <section id="reposteria" class="mb-32">
             <div class="border-y-[8px] border-negro py-6 mb-16 bg-brand-light text-negro px-4 transform rotate-1">
@@ -1206,7 +1314,7 @@
     <script>
             // ── Scroll-spy: resalta el link activo según la sección visible ──
             (function () {
-                const sections = ['cafe', 'reposteria', 'libros'];
+                const sections = ['cafe', 'para-llevar', 'reposteria', 'libros'];
                 const navLinks = {};
                 sections.forEach(id => {
                     const link = document.querySelector('#nav-desktop a[href="#' + id + '"]');
