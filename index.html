@@ -289,7 +289,7 @@
                     class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">
                     A base de espresso
                 </h4>
-                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                <ul data-menu="espresso" class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Tradicional</span>
@@ -566,7 +566,7 @@
                 <h4
                     class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">
                     A base de Cold Brew</h4>
-                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                <ul data-menu="cold-brew" class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Cold
@@ -597,7 +597,7 @@
                 <h4
                     class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 inline-block border-b-[6px] border-brand-light pb-2">
                     Bebidas sin Café</h4>
-                <ul class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                <ul data-menu="sin-cafe" class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
                                 class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Chocolatada
@@ -679,7 +679,7 @@
                     <span class="bg-[#f4f3f1] px-2 font-bold text-xs md:text-sm">5.500</span>
                 </div>
                 <div class="dotted-line border-brand-dark mb-6 opacity-30"></div>
-                <ul
+                <ul data-menu="infusiones"
                     class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest pl-4 text-negro">
                     <li class="group">
                         <div class="flex items-baseline justify-between"><span
@@ -839,7 +839,7 @@
                     <h4
                         class="text-2xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-light pb-2">
                         Otras Bebidas</h4>
-                    <ul class="space-y-4 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
+                    <ul data-menu="otras" class="space-y-4 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
                         <li class="group">
                             <div class="flex items-baseline justify-between"><span
                                     class="bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center">Té
@@ -931,7 +931,7 @@
                     <h4
                         class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-dark pb-2 inline-block">
                         Panes y Salados</h4>
-                    <ul
+                    <ul data-menu="panes"
                         class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
                         <li class="group">
                             <div class="flex items-baseline justify-between"><span
@@ -1038,7 +1038,7 @@
                     <h4
                         class="text-2xl md:text-3xl font-serif font-bold uppercase tracking-title text-brand-dark mb-8 border-b-[6px] border-brand-dark pb-2 inline-block">
                         Tortas y Postres</h4>
-                    <ul
+                    <ul data-menu="postres"
                         class="space-y-4 md:space-y-6 text-xs md:text-sm font-bold uppercase tracking-widest text-negro">
                         <li class="group">
                             <div class="flex items-baseline justify-between"><span
@@ -1355,6 +1355,93 @@
             btn.addEventListener('click', () => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
+        })();
+    </script>
+
+    <script>
+        // ── Productos nuevos publicados desde Nodux ──
+        // Lo de siempre está escrito arriba a mano. Lo que se crea en Nodux
+        // (Operaciones › Café › Nuevo producto) llega por aquí y se agrega al
+        // final de su lista (data-menu). La etiqueta "Nuevo" dura 30 días desde
+        // que se publicó y se quita sola. Si Nodux no responde, el menú queda
+        // tal cual.
+        (function () {
+            var URL = 'https://omhrqewzxdftglpvuqfg.supabase.co/rest/v1/rpc/public_cafe_menu';
+            // Clave pública (anon): solo puede leer lo publicado en el menú
+            var KEY = 'sb_publishable_xfH-F-8ThlS6E3Gk_Fhu8A_nxNI1fbx';
+            var NEW_DAYS = 30;
+            var SVG = 'http://www.w3.org/2000/svg';
+            var ICONS = {
+                caliente: 'M8 3v4M12 3v4M16 3v4M5 9h14v7a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9zM19 9h2v3h-2',
+                frio: 'M7 6l1 14h8l1-14M6 6h12M14 6l1-4h-4M9 11l2 6M13 11l-1 6'
+            };
+
+            function el(tag, cls, text) {
+                var n = document.createElement(tag);
+                if (cls) n.className = cls;
+                if (text != null) n.textContent = text;
+                return n;
+            }
+
+            function icon(kind) {
+                var svg = document.createElementNS(SVG, 'svg');
+                svg.setAttribute('width', '16');
+                svg.setAttribute('height', '16');
+                svg.setAttribute('class', 'w-4 h-4 inline-block ml-1 text-brand-dark');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('fill', 'none');
+                svg.setAttribute('stroke', 'currentColor');
+                svg.setAttribute('stroke-width', '2');
+                svg.setAttribute('stroke-linecap', 'square');
+                svg.setAttribute('stroke-linejoin', 'miter');
+                var path = document.createElementNS(SVG, 'path');
+                path.setAttribute('d', ICONS[kind]);
+                svg.appendChild(path);
+                return svg;
+            }
+
+            function price(n) {
+                return Math.round(Number(n)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            }
+
+            function item(p) {
+                var li = el('li', 'group');
+                var row = el('div', 'flex items-baseline justify-between');
+                var name = el('span', 'bg-[#f4f3f1] pr-4 z-10 transition-colors group-hover:text-brand-dark flex items-center flex-wrap gap-y-1', p.name);
+                var age = (Date.now() - new Date(p.menu_published_at).getTime()) / 86400000;
+                if (age < NEW_DAYS) {
+                    name.appendChild(document.createTextNode(' '));
+                    name.appendChild(el('span', 'ml-2 px-1.5 py-0.5 text-[9px] md:text-[10px] font-bold uppercase tracking-wider bg-brand-dark text-blanco border-2 border-negro shadow-[2px_2px_0px_rgba(0,0,0,1)] select-none', 'Nuevo'));
+                }
+                if (p.menu_temp) {
+                    var icons = el('span', 'inline-flex ml-2 items-center');
+                    if (p.menu_temp === 'caliente' || p.menu_temp === 'ambas') icons.appendChild(icon('caliente'));
+                    if (p.menu_temp === 'frio' || p.menu_temp === 'ambas') icons.appendChild(icon('frio'));
+                    name.appendChild(icons);
+                }
+                row.appendChild(name);
+                row.appendChild(el('div', 'dotted-line group-hover:border-negro transition-colors'));
+                row.appendChild(el('span', 'bg-[#f4f3f1] pl-4 z-10 opacity-90', price(p.price)));
+                li.appendChild(row);
+                if (p.description) {
+                    li.appendChild(el('p', 'text-xs md:text-sm text-brand-dark mt-1 normal-case tracking-normal font-normal leading-relaxed max-w-xl', p.description));
+                }
+                return li;
+            }
+
+            fetch(URL, {
+                method: 'POST',
+                headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ p_slug: 'refugios' })
+            })
+                .then(function (r) { return r.ok ? r.json() : []; })
+                .then(function (rows) {
+                    (rows || []).forEach(function (p) {
+                        var list = document.querySelector('ul[data-menu="' + p.menu_section + '"]');
+                        if (list) list.appendChild(item(p));
+                    });
+                })
+                .catch(function () { /* sin Nodux, el menú de siempre */ });
         })();
     </script>
 
